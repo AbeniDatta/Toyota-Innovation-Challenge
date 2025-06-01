@@ -28,17 +28,15 @@ Original file is located at
 # make darknet (builds darknet so that you can then use the darknet executable file to run or train object detectors)
 !make
 
-"""3. Download pre-trained YOLOv4 weights-
+"""3. Downloading pre-trained YOLOv4 weights-
 
 YOLOv4 has been trained already on the coco dataset which has 80 classes that it can predict. We want to grab these pretrained weights so that we can run YOLOv4 on these pretrained classes and get detections.
 """
 
 !wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
 
-"""4. Define Helper Functions"""
+"""4. Defining Helper Functions"""
 
-# Commented out IPython magic to ensure Python compatibility.
-# define helper functions
 def imShow(path):
   import cv2
   import matplotlib.pyplot as plt
@@ -54,7 +52,7 @@ def imShow(path):
   plt.imshow(cv2.cvtColor(resized_image, cv2.COLOR_BGR2RGB))
   plt.show()
 
-# use this to upload files
+# Upload a file/image of your choosing
 def upload():
   from google.colab import files
   uploaded = files.upload() 
@@ -63,20 +61,19 @@ def upload():
       f.write(data)
       print ('saved file', name)
 
-# use this to download a file  
+# To download the file/image with the detections made
 def download(path):
   from google.colab import files
   files.download(path)
 
 """Image Recognition"""
 
-# Commented out IPython magic to ensure Python compatibility.
-# trying out the upload helper function
+# Trying out the upload helper function
 # %cd ..
 upload()
-# %cd darknet
+%cd darknet
 
-# running darknet with YOLOv4 with the test image
+# Running darknet with YOLOv4 with the test image
 !./darknet detector test cfg/coco.data cfg/yolov4.cfg yolov4.weights ../test_img6.jpeg
 imShow('predictions.jpg')
 
@@ -85,10 +82,10 @@ imShow('predictions.jpg')
 from google.colab import drive
 drive.mount('/content/gdrive')
 
-# upload the video of your choosing
+# Upload a video of your choosing
 upload()
 
 !./darknet detector demo cfg/coco.data cfg/yolov4.cfg yolov4.weights -dont_show fast_video.mp4 -i 0 -out_filename results.avi
 
-# to download the video with the detections made
+# Lastly, we download the video with the detections made
 download('results.avi')

@@ -1,7 +1,7 @@
 # Toyota Innovation Challenge
 
 
-Toyota Innovation Challenge (jointly held by the Engineering Ideas Clinic at UWaterloo and Toyota Motor Manufacturing Canada (TMMC)) - Prize Winner in the Machine Learning category
+Toyota Innovation Challenge (jointly held by the University of Waterloo Engineering Ideas Clinic and Toyota Motor Manufacturing Canada (TMMC)) - Prize Winner in the Machine Learning category
 
 - Employed YOLO (You Only Look Once) object detection algorithm to accurately identify and track the wheels of a car and the car itself, in both stationary and dynamic scenarios, as well as in plain and noisy backgrounds, as per the challenge’s problem statement.
 

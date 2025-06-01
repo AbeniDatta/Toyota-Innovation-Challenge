@@ -16,6 +16,8 @@ Toyota Innovation Challenge (jointly held by the Engineering Ideas Clinic at UWa
 <img width="732" alt="test_img5_result" src="https://github.com/user-attachments/assets/b14dd915-321a-42bb-b202-957baf4622bf" />
 
 
+
+
 File "image_and_video_recognition.py" provides the code for object detection on static images or pre-recorded video files.
 
 File "realtime_camera_orbbec_astra.py" provides the code for real-time object detection on a live camera feed.

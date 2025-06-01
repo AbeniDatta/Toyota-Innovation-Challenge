@@ -28,7 +28,12 @@ import time
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
-"""2. Then we need to Clone and Set Up Darknet for YOLOv4."""
+"""3. Defining the confidence and IOU thresholds for better prediction."""
+    
+CONFIDENCE_THRESHOLD = 0.50
+IOU_THRESHOLD        = 0.40
+
+"""4. Then we need to Clone and Set Up Darknet for YOLOv4."""
 
 # clone darknet repo
 !git clone https://github.com/AlexeyAB/darknet
@@ -45,7 +50,7 @@ import matplotlib.pyplot as plt
 # make darknet (builds darknet so that you can then use the darknet.py file and have its dependencies)
 !make
 
-"""3. Download pre-trained YOLOv4 weights-
+"""5. Download pre-trained YOLOv4 weights-
 
 YOLOv4 has been trained already on the coco dataset which has 80 classes that it can predict. We want to grab these pretrained weights so that we can run YOLOv4 on these pretrained classes and get detections.
 """
@@ -53,7 +58,7 @@ YOLOv4 has been trained already on the coco dataset which has 80 classes that it
 # get bthe scaled yolov4 weights file that is pre-trained to detect 80 classes (objects) from shared google drive
 !wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1V3vsIaxAlGWvK4Aar9bAiK5U0QFttKwq' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1V3vsIaxAlGWvK4Aar9bAiK5U0QFttKwq" -O yolov4-csp.weights && rm -rf /tmp/cookies.txt
 
-"""4. In order to utilize YOLOv4 with Python code we will need to use some of the pre-built functions found within darknet.py by importing the functions into our workstation."""
+"""6. In order to utilize YOLOv4 with Python code we will need to use some of the pre-built functions found within darknet.py by importing the functions into our workstation."""
 
 # import darknet functions to perform object detections
 from darknet import *
@@ -76,11 +81,17 @@ def darknet_helper(img, width, height):
 
   # run model on darknet style image to get detections
   copy_image_from_bytes(darknet_image, img_resized.tobytes())
-  detections = detect_image(network, class_names, darknet_image)
+  detections = detect_image(
+        network,
+        class_names,
+        darknet_image,
+        thresh=CONFIDENCE_THRESHOLD,
+        nms=IOU_THRESHOLD
+  )
   free_image(darknet_image)
   return detections, width_ratio, height_ratio
 
-"""5. Next, we need to define certain helper functions that will be used to easily convert between different image types within our later steps."""
+"""7. Next, we need to define certain helper functions that will be used to easily convert between different image types within our later steps."""
 
 # function to convert the JavaScript object into an OpenCV image
 def js_to_image(js_reply):
@@ -117,7 +128,7 @@ def bbox_to_bytes(bbox_array):
 
   return bbox_bytes
 
-"""6. Below is a function to start up the video stream. The video stream frames are fed as input to YOLOv4."""
+"""8. Below is a function to start up the video stream. The video stream frames are fed as input to YOLOv4."""
 
 # JavaScript to properly create our live video stream using our webcam as input
 def video_stream():
@@ -255,7 +266,7 @@ def video_frame(label, bbox):
   data = eval_js('stream_frame("{}", "{}")'.format(label, bbox))
   return data
 
-"""7. Start the camera!"""
+"""9. Start the camera!"""
 
 # start streaming video from camera
 video_stream()
